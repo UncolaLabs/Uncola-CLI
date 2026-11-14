@@ -1,0 +1,12 @@
+node_modules/
+dist/
+__pycache__/
+# Live JWTs and personal scripts: never publish
+headers.txt
+*.har
+seed.py
+seed_manifest.json
+cleanup.py
+release/
+dev_pw
+gh_pan

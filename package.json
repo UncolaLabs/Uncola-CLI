@@ -1,0 +1,36 @@
+{
+  "name": "uncola",
+  "version": "0.5.4",
+  "description": "Command-line client for Uncola: log goals, activities, achievements and 1:1s from the terminal",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "uncola": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "skill"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "npm run build",
+    "dev": "node src/cli.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "test:live": "vitest run --config vitest.live.config.ts"
+  },
+  "dependencies": {
+    "commander": "^15.0.0"
+  },
+  "bundleDependencies": [
+    "commander"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}
