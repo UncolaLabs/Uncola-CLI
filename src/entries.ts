@@ -141,7 +141,7 @@ export async function createEntry(
  * A public entry is visible to anyone, so ask first (or require --yes), and point out what brag's
  * redaction would hide. The entry is saved as written: public is what was asked for.
  */
-async function confirmPublic(body: Record<string, unknown>, opts: WriteOptions): Promise<void> {
+export async function confirmPublic(body: Record<string, unknown>, opts: WriteOptions): Promise<void> {
   const { redactions } = redact(body, ['title', 'description', 'notes', 'skills']);
   if (redactions.length) {
     info(`! This public entry includes: ${redactions.map((r) => `${r.reason} (${r.original})`).join('; ')}`);

@@ -129,6 +129,42 @@ describe(`uncola against ${envName}`, () => {
     expect((await uncola(['goal', 'progress', ids.goal, '60'])).json).toMatchObject({ progress: 60, status: 'in_progress' });
   });
 
+  it('edit changes one field and leaves the rest of every type as it was', async () => {
+    const shown = async (id: string) => (await uncola(['show', id])).json;
+
+    const g = await uncola(['edit', ids.goal, '--title', `${run} Run a 10K`, '--due', '2027-01-31']);
+    expect(g.code, g.stdout).toBe(0);
+    expect(await shown(ids.goal)).toMatchObject({ title: `${run} Run a 10K`, dueDate: '2027-01-31', description: 'Couch to 5K', progress: 60, status: 'in_progress' });
+    expect((await shown(ids.goal)).linkedActivities).toContain(ids.activity);
+
+    expect((await uncola(['edit', ids.goal, '--progress', '100'])).code).toBe(0);
+    expect(await shown(ids.goal)).toMatchObject({ progress: 100, status: 'completed', title: `${run} Run a 10K` });
+    expect((await uncola(['edit', ids.goal, '--progress', '60'])).code).toBe(0);
+
+    expect((await uncola(['edit', ids.activity, '--time', '2h', '--skills', 'Running'])).code).toBe(0);
+    expect(await shown(ids.activity)).toMatchObject({ title: `${run} Long run`, timeSpent: '2', skills: ['Running'], goalId: ids.goal });
+    expect((await uncola(['edit', ids.activity, '--goal', 'none'])).code).toBe(0);
+    expect((await shown(ids.activity)).goalId ?? null).toBeNull();
+    expect((await uncola(['edit', ids.activity, '--goal', ids.goal])).code).toBe(0);
+    expect(await shown(ids.activity)).toMatchObject({ goalId: ids.goal });
+
+    expect((await uncola(['edit', ids.win, '--desc', 'Crossed the line in 31 minutes'])).code).toBe(0);
+    expect(await shown(ids.win)).toMatchObject({ title: `${run} Finished my first 5K`, description: 'Crossed the line in 31 minutes', skills: ['Running'] });
+
+    expect((await uncola(['edit', ids.oneOnOne, '--notes', 'Feeling stronger', '--action', 'Pick shoes:2026-11-20'])).code).toBe(0);
+    const m = await shown(ids.oneOnOne);
+    expect(m).toMatchObject({ participants: ['Alex'], discussionPoints: ['Race plan'], notes: 'Feeling stronger' });
+    expect(m.actionItems).toEqual([{ text: 'Pick shoes', completed: false, dueDate: 'Nov 20, 2026' }]);
+  });
+
+  it('edit refuses an option that does not fit, an empty edit, and a loose title', async () => {
+    expect((await uncola(['edit', ids.win, '--due', '2027-01-01'])).code).toBe(2);
+    expect((await uncola(['edit', ids.win])).code).toBe(2);
+    expect((await uncola(['edit', ids.oneOnOne, '--point', 'x'])).code).toBe(2);
+    expect((await uncola(['edit', `${run} no such entry`, '--title', 'x'])).code).toBe(3);
+    expect((await uncola(['edit', run, '--title', 'x'])).json.error.code).toBe('ambiguous');
+  });
+
   it('brag --dry-run draws the card without sharing', async () => {
     const r = await uncola(['brag', ids.win, '--dry-run']);
     expect(r.code).toBe(0);

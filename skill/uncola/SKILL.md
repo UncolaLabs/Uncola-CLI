@@ -1,6 +1,6 @@
 ---
 name: uncola
-description: The user's career journal in Uncola (app.uncola.ai) — goals, activities, achievements (wins) and 1:1 notes. Use whenever the user wants to brag, show off, share or post about a win, race, launch or anything they did (even without saying "Uncola"), and when they ask to log, record or save something they did, a win, progress on a goal or a 1:1; to see their goals, recent entries or a recap; or to update a goal's progress.
+description: The user's career journal in Uncola (app.uncola.ai) — goals, activities, achievements (wins) and 1:1 notes. Use whenever the user wants to brag, show off, share or post about a win, race, launch or anything they did (even without saying "Uncola"), and when they ask to log, record or save something they did, a win, progress on a goal or a 1:1; to see their goals, recent entries or a recap; or to update a goal's progress, or to change or correct an entry.
 ---
 
 # Uncola
@@ -37,6 +37,7 @@ The user signs in once, themselves, in a terminal: `uncola login`. Never run `lo
 | Log a goal | `uncola log goal "<title>" --desc "<why>" --due YYYY-MM-DD --json` |
 | Log a 1:1 | `uncola log 1on1 "<title>" --with "Name" --notes "<notes>" --action "Do X:YYYY-MM-DD" --json` |
 | Set goal progress (100 marks it completed) | `uncola goal progress <goal id> <0-100> --json` |
+| Change an entry (only the options given change) | `uncola edit <id> --title "<new title>" --desc "<text>" --json`; also `--due`/`--progress` (goal), `--time`/`--skills`/`--goal <id or none>` (activity), `--skills` (win), `--notes`/`--action "Do X:YYYY-MM-DD"` (1:1), `--visibility` |
 | Highlights for a period | `uncola recap --since 90d --json` |
 | Preview a public share (brag) | `uncola brag <id> --dry-run --json` |
 | Share publicly — **only after the user approves the previewed text** (with `--yes`, use the ID, not a title) | `uncola brag <id> --title "<approved title>" --message "<approved message>" --yes --json` |
@@ -57,6 +58,7 @@ For long text, pass JSON on stdin instead of flags: `echo '{"title":"…","descr
 3. Entries are private unless the user asks otherwise. A public entry (`--public`) needs `--yes`; pass it only when the user asked for a public entry.
 4. After a goal-related activity, offer to update the goal's progress; don't change it unprompted.
 5. Confirm back what was saved: the type, title and linked goal from the JSON result.
+6. **Editing:** only when the user asks to change or correct an entry. Find it with `uncola feed --json` and pass its full `itemId`, never a row number. Change only what they asked for, and preview with `--dry-run` when the request is ambiguous. Never make an entry public with an edit unless the user asked for that (`--visibility public` needs `--yes`). An entry's date, and a 1:1's participants and discussion points, can't be edited: offer to delete and re-log instead, and delete only after the user confirms.
 
 ## Exit codes
 

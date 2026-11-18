@@ -32,6 +32,7 @@ export function shortHelp(prefix = ''): string {
     ['feed [type]', 'your recent entries (also: list)'],
     ['show <# or title>', 'one entry in full (also: get)'],
     ['goal list', 'goals with progress · goal progress <goal> <percent>'],
+    ['edit <#>', 'change an entry, e.g. edit 2 --title "New title"'],
     ['delete <#>', 'delete an entry (also: rm)'],
     ['brag <#>', 'share an entry publicly, with its card'],
     ['recap', 'your highlights as a card'],

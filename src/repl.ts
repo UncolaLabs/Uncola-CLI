@@ -16,7 +16,7 @@ const COMPLETIONS = [
   'home', 'help', 'log goal', 'log activity', 'log achievement', 'log win', 'log 1on1', 'log 1on1 with ',
   'feed', 'feed goal', 'feed activity', 'feed achievement', 'feed 1on1', 'list', 'show', 'get',
   'goal', 'goal list', 'goal progress', 'activity', 'activity list', 'achievement', 'achievement list', '1on1', '1on1 list',
-  'brag', 'share', 'recap', 'delete', 'rm', 'status', 'login', 'logout', 'clear', 'exit',
+  'brag', 'share', 'recap', 'edit', 'update', 'delete', 'rm', 'status', 'login', 'logout', 'clear', 'exit',
 ];
 
 function completer(line: string): [string[], string] {

@@ -70,6 +70,7 @@ uncola log 1on1 with Sarah: growth plan and Q1 priorities
 uncola goal list
 uncola goal progress aws 40
 uncola feed
+uncola edit 2 --title "Shipped the CLI to ten testers"
 uncola recap
 uncola brag 1
 ```
@@ -90,6 +91,7 @@ Run the `uncola` command to enter an interactive shell. It shows your dashboard,
 $ uncola
 uncola> log act Studied for the AWS exam --goal aws --time 2h
 uncola> goal progress aws 40
+uncola> edit 2 --desc "Added the agent skill"
 uncola> recap
 uncola> exit
 ```
@@ -130,6 +132,8 @@ Commands:
                                     [type], e.g. feed goal
   show|get <entry>                  Show one entry in full: show <# from the
                                     last list, or part of the title>
+  edit|update [options] <entry>     Change an entry: edit <#> --title ... (only
+                                    the options you give change)
   goal|goals [options]              Add a goal step by step; goal list, goal
                                     progress
   activity|act [options]            Add an activity step by step; activity list

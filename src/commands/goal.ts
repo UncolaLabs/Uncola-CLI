@@ -126,7 +126,7 @@ export async function goalProgress(env: Environment, ref: string, percent: strin
   await updateEntry(env, goal, body, opts, `✓ ${titleOf(goal)}: ${goal.progress ?? 0}% → ${progress}%  ${progressBar(progress)}${done}`);
 }
 
-function parseProgress(v: unknown): number {
+export function parseProgress(v: unknown): number {
   const n = Number(String(v).replace(/%$/, ''));
   if (!Number.isInteger(n) || n < 0 || n > 100) throw new CliError(`Progress must be a whole number from 0 to 100, got "${v}".`, 'usage', 2);
   return n;

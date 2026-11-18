@@ -3,6 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { Command, Option } from 'commander';
 import { brag } from './commands/brag.ts';
+import { edit } from './commands/edit.ts';
 import { feed } from './commands/feed.ts';
 import { form } from './commands/form.ts';
 import { goalAdd, goalList, goalProgress } from './commands/goal.ts';
@@ -196,6 +197,38 @@ export function buildProgram(inRepl = false): Command {
     .argument('<entry>', '# from the last list, part of the title, or an ID')
     .action(run(show));
   examples(program.commands.at(-1)!, inRepl, 'show 2', 'show "weekly with my manager"');
+
+  program
+    .command('edit')
+    .aliases(['update'])
+    .description('Change an entry: edit <#> --title ... (only the options you give change)')
+    .argument('<entry>', '# from the last list, part of the title, or an ID')
+    .option('--title <text>', 'new title')
+    .option('--desc <text>', 'new description')
+    .option('--due <date>', 'goal: new due date YYYY-MM-DD, or none')
+    .option('--progress <percent>', 'goal: 0–100 (100 completes it)')
+    .option('--goal <goal>', 'activity: link to a goal (its # or part of its title), or none')
+    .option('--time <duration>', 'activity: time spent, e.g. 6h, 90m; or none')
+    .option('--skills <list>', 'activity or win: comma-separated skills (replaces the list)')
+    .addOption(new Option('--with <name>').argParser(collect).hideHelp())
+    .addOption(new Option('--point <text>').argParser(collect).hideHelp())
+    .option('--action <text[:YYYY-MM-DD]>', '1:1: action item (repeatable; replaces the list)', collect)
+    .option('--notes <text>', '1:1: new meeting notes')
+    .option('--company <name>', 'one of the companies in your Uncola profile')
+    .addOption(new Option('--visibility <level>', 'who can see it').choices(['private', 'team', 'company', 'public']))
+    .option('--public', 'shorthand for --visibility public')
+    .option('-y, --yes', 'make an entry public without asking')
+    .option('--input <file>', 'read options as a JSON object from a file, or - for stdin (flags win)')
+    .option('--dry-run', 'print the API request instead of sending it')
+    .addHelpText('after', "\nNot editable after saving: an entry's date, and a 1:1's participants and discussion points. Delete the entry and log it again with --date, --with and --point.")
+    .action(run(edit));
+  examples(
+    program.commands.at(-1)!,
+    inRepl,
+    'edit 2 --title "Earned the Professional Cloud Architect certification"',
+    'edit 3 --progress 60 --due 2027-01-31',
+    'edit "weekly with my manager" --notes "Agreed the Q1 plan" --dry-run',
+  );
 
   // Each type on its own opens a form, like the bots; `<type> list` and `<type> add` also work.
   for (const type of ['goal', 'activity', 'achievement', '1on1'] as const) {

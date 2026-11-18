@@ -1,6 +1,6 @@
 {
   "name": "uncola",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "Command-line client for Uncola: log goals, activities, achievements and 1:1s from the terminal",
   "license": "Apache-2.0",
   "type": "module",
