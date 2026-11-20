@@ -311,7 +311,7 @@ export function buildProgram(inRepl = false): Command {
     .command('login')
     .aliases(['connect', 'signin'])
     .description('Sign in through your browser (also: connect, sign in)')
-    .option('--provider <name>', 'skip the chooser: google, linkedin, apple or email')
+    .option('--provider <name>', 'skip the chooser: google, linkedin, apple, github or email')
     .option('--no-browser', "don't open a browser; paste the redirected URL instead (SSH, headless)")
     .addHelpText('after', '\nSet BROWSER to choose the browser, e.g. BROWSER="Google Chrome" uncola login (macOS).')
     .action(run(login));

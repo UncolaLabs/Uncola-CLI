@@ -39,6 +39,7 @@ export const PROVIDERS: Record<string, string> = {
   google: 'Google',
   linkedin: 'LinkedIn',
   apple: 'SignInWithApple',
+  github: 'GitHub',
   email: 'COGNITO',
 };
 

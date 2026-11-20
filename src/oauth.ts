@@ -20,7 +20,9 @@ export function authorizeUrl(
   env: Environment,
   opts: { redirectUri: string; challenge: string; state: string; provider?: string },
 ): string {
-  const url = new URL('/oauth2/authorize', env.authDomain);
+  // No provider: open the web app's own login page, which shows the chooser and forwards these
+  // parameters to Cognito. A provider skips the chooser, so go straight to Cognito.
+  const url = opts.provider ? new URL('/oauth2/authorize', env.authDomain) : new URL('/login', env.appBase);
   url.searchParams.set('response_type', 'code');
   url.searchParams.set('client_id', requireClientId(env));
   url.searchParams.set('redirect_uri', opts.redirectUri);

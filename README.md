@@ -56,6 +56,8 @@ uncola login
 
 This opens your browser at Uncola's sign-in page. Sign in with your [Uncola](https://uncola.ai) account, then come back to the terminal.
 
+To skip the sign-in page and go straight to one provider, add `--provider` with `google`, `linkedin`, `apple`, `github` or `email`, for example `uncola login --provider github`.
+
 Your sign-in is saved on this computer, in `~/.config/uncola/credentials.json`, which only you can read. `uncola` renews it as you use it, but after 30 days you need to run `uncola login` again. `uncola logout` signs you out and deletes it.
 
 ### CLI Usage

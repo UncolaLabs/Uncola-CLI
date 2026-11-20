@@ -7,7 +7,7 @@ const dev = ENVIRONMENTS.dev;
 afterEach(() => vi.unstubAllGlobals());
 
 describe('authorizeUrl', () => {
-  it('builds the Cognito authorize URL with PKCE', () => {
+  it('goes straight to Cognito authorize with PKCE when a provider is given', () => {
     const url = new URL(
       authorizeUrl(dev, { redirectUri: 'http://localhost:53682/callback', challenge: 'chal', state: 'st', provider: 'Google' }),
     );
@@ -21,6 +21,20 @@ describe('authorizeUrl', () => {
       code_challenge_method: 'S256',
       state: 'st',
       identity_provider: 'Google',
+    });
+  });
+
+  it("opens the web app's login page when no provider is given", () => {
+    const url = new URL(authorizeUrl(dev, { redirectUri: 'http://localhost:53682/callback', challenge: 'chal', state: 'st' }));
+    expect(url.origin + url.pathname).toBe('https://app.styloc.com/login');
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      response_type: 'code',
+      client_id: '4hqvib8lajb2i69n5h7t70ppq9',
+      redirect_uri: 'http://localhost:53682/callback',
+      scope: 'openid email profile',
+      code_challenge: 'chal',
+      code_challenge_method: 'S256',
+      state: 'st',
     });
   });
 
